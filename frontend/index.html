@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DevOps App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f8fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #details {
+      max-width: 600px;
+      margin: 30px auto;
+    }
+    h3 {
+      text-align: center;
+      color: #555;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background-color: #fff;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>DevOps Candidate Form</h2>
+
+  <form id="candidateForm" onsubmit="event.preventDefault(); addUser();">
+    <input id="name" placeholder="Name" required>
+    <input id="email" placeholder="Email" type="email" required>
+    <input id="mobile" placeholder="Mobile" type="tel" required>
+    <input id="tech" placeholder="Tech" required>
+    <input id="exp" placeholder="Experience" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="details">
+    <h3>Details:</h3>
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    function addUser() {
+      fetch("/api/add", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          mobile: document.getElementById('mobile').value,
+          tech: document.getElementById('tech').value,
+          experience: document.getElementById('exp').value
+        })
+      }).then(() => {
+        loadUsers();
+        document.getElementById('candidateForm').reset();
+      });
+    }
+
+    function loadUsers() {
+      fetch("/api/users")
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById('list');
+          list.innerHTML = "";
+          data.forEach(u => {
+            list.innerHTML += `<li>${u.name} - ${u.tech} (${u.experience})</li>`;
+          });
+        });
+    }
+
+    // Load users on page load
+    window.onload = loadUsers;
+  </script>
+
+</body>
+</html>
