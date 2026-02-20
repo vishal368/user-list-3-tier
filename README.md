@@ -9,4 +9,4 @@
 | Container     | Docker               |
 | Orchestration | Kubernetes           |
 | Monitoring    | Prometheus + Grafana |
-| Cluster       | Minikube             |
+| Cluster-handel| docker compose       |
