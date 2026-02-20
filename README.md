@@ -13,6 +13,9 @@
 
 
 # Run the application 
+docker-compose up --build
+
+# Application port
 
 http://localhost:3000/
 
